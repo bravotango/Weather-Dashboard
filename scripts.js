@@ -1,7 +1,7 @@
 $(document).ready(function () {
   let city = "seattle";
   const APIKey = "44c329c1fb39cc90b982fb588f6a68c5";
-  const queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`;
+  const queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`;
   let kelvinTemp;
   let kelvinTempMax;
   let kelvinTempMin;
