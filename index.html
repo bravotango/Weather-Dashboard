@@ -6,23 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./favicon.ico" />
     <title>Weather Dashboard</title>
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
-    />
+    /> -->
     <link
       rel="stylesheet"
       href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"
     />
   </head>
   <body>
+    <nav>
+      <ul></ul>
+    </nav>
+    <form id="searchCity">
+      <label for="searchCities">Enter city name</label>
+      <input id="citySearch" placeholder="city name" type="search" required />
+      <button>Search</button>
+    </form>
+
+    <span id="invalidSearch"></span>
+
     <span id="data"></span>
 
     <span id="weatherIcon"></span>
     <span id="city"></span>
+    <!-- TODO: change to degrees (F, C, Kelvin)  -->
     <span id="fahrenheit"></span>
+    <span id="windSpeed"></span>
+    <span id="uvIndex"></span>
+    <span id="humidity"></span>
+    <span id="weatherMain"></span>
+    <span id="weatherDescription"></span>
+
+    <nav>
+      <ol></ol>
+    </nav>
+
     <!-- <div id="accordion">
       <h3>Section 1</h3>
       <div>
