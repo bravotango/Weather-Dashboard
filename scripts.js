@@ -20,7 +20,7 @@ $(document).ready(function () {
   let humidityEl = $("#humidity");
   let weatherMainEl = $("#weatherMain");
   let weatherDescriptionEl = $("#weatherDescription");
-  let cityNavEl = $("nav ul");
+  let cityNavEl = $("nav ul#searchedCities");
 
   //   setInterval(function () {
   //     city ?? fetchData();
@@ -39,6 +39,7 @@ $(document).ready(function () {
   function setLocalStorage() {
     searchedCities.find((c) => c === city) ?? searchedCities.push(city);
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
+    cityNavEl.html("");
     for (let i = 0; i < searchedCities.length; i++) {
       cityNavEl.append(searchedCities[i]);
     }
@@ -135,10 +136,11 @@ $(document).ready(function () {
       weatherDescriptionEl.html("").append(weatherDescription);
     } else {
       console.log("list length", d.list.length);
+      $("ol#forecast").html("");
       for (let i = 0; i < 5; i++) {
         // TODO: make a card with this info 'd.list[i]'
         let li = $("<li>").text(d.list[i].wind.gust);
-        $("ol").append(li);
+        $("ol#forecast").append(li);
       }
     }
   }
