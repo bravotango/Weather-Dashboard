@@ -1,0 +1,16 @@
+#forecast {
+  div p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgrey;
+    font-size: 90%;
+    margin-bottom: 0;
+    span {
+      min-width: 20%;
+    }
+    &:last-child {
+      border: none;
+    }
+  }
+}

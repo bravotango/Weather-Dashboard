@@ -1,0 +1,23 @@
+#forecast div p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 1px solid lightgrey;
+  font-size: 90%;
+  margin-bottom: 0;
+}
+
+#forecast div p span {
+  min-width: 20%;
+}
+
+#forecast div p:last-child {
+  border: none;
+}
+/*# sourceMappingURL=styles.css.map */

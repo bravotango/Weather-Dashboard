@@ -1,5 +1,7 @@
 $(document).ready(function () {
   let city;
+  let longitude;
+  let latitude;
   const APIKey = "44c329c1fb39cc90b982fb588f6a68c5";
 
   let searchedCities = getLocalStorage();
@@ -45,26 +47,61 @@ $(document).ready(function () {
     }
   }
 
-  function fetchAPI(name) {
+  function getLongLat(city) {
+    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`;
+    fetch(URL)
+      .then(function (response) {
+        if (response.status === 404) {
+          handle404();
+          return;
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data.coord.lat);
+        latitude = data.coord.lat;
+        longitude = data.coord.lon;
+
+        fetchOneCallAPI(latitude, longitude);
+        fetchAPI("weather");
+        fetchAPI("forecast");
+      });
+  }
+
+  function fetchOneCallAPI(lat, lon) {
+    const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&appid=${APIKey}&units=imperial`;
+    fetch(URL)
+      .then(function (response) {
+        if (response.status === 404) {
+          handle404();
+          return;
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        console.log("fetchOneCallAPI", data);
+        // TODO create function to populate DOM
+      });
+  }
+
+  function fetchAPI(name, lon, lat) {
     const apiName = name.trim().toLowerCase();
     const URL = `https://api.openweathermap.org/data/2.5/${apiName}?q=${city}&appid=${APIKey}`;
 
     fetch(URL)
       .then(function (response) {
+        console.log("response", response);
         if (response.status === 404) {
           handle404();
-
           return;
         }
-        if (!response.ok) {
-          throw new Error("HTTP error, status = " + response.status);
-        }
-        setLocalStorage();
         return response.json();
       })
       .then(function (data) {
-        // TODO: make for both
-        apiName === "weather" ?? getWeatherStats(data), setWeatherStats(data);
+        console.log("data", data);
+        setLocalStorage();
+        setWeatherStats(data);
+        return data;
       });
   }
   function handle404() {
@@ -75,15 +112,11 @@ $(document).ready(function () {
     if (!data) {
       return;
     }
-    console.log("main", data);
-    let dayIndex = 0;
-    setWeatherValues(data, dayIndex);
+    setWeatherValues(data);
     setViewElValues(data);
   }
 
-  function setWeatherValues(main, i) {
-    setTemperatures(main);
-
+  function setWeatherValues(main) {
     if (!main.list) {
       const weather = main.weather[0];
       weatherDescription = weather.description;
@@ -95,15 +128,6 @@ $(document).ready(function () {
     }
   }
 
-  function setTemperatures(main) {
-    let kelvinTemp = main.temp;
-    let kelvinTempMax = main.temp_max;
-    let kelvinTempMin = main.temp_min;
-
-    fahrenheit = kelvinToFahrenheit(kelvinTemp);
-    fahrenheitMax = kelvinToFahrenheit(kelvinTempMax);
-    fahrenheitMin = kelvinToFahrenheit(kelvinTempMin);
-  }
   function convertUnixToUnderstandableTime() {
     // TODO: create conversion
     return "5AM";
@@ -121,9 +145,8 @@ $(document).ready(function () {
   }
 
   function setViewElValues(d) {
-    //weather.icon
     cityEl.text(d.name);
-
+    let forecast = $("#forecast");
     weatherIconEl.html("").append(weatherImg);
 
     if (!d.list) {
@@ -135,14 +158,69 @@ $(document).ready(function () {
       weatherMainEl.html("").append(weatherMain);
       weatherDescriptionEl.html("").append(weatherDescription);
     } else {
-      console.log("list length", d.list.length);
-      $("ol#forecast").html("");
-      for (let i = 0; i < 5; i++) {
-        // TODO: make a card with this info 'd.list[i]'
-        let li = $("<li>").text(d.list[i].wind.gust);
-        $("ol#forecast").append(li);
+      let currentDay;
+
+      for (let i = 0; i < d.list.length; i++) {
+        let p = $("<p>");
+        if (i === 0) {
+          var div = $("<div>");
+        }
+        let list = d.list[i];
+        let weather = list.weather[0];
+        let day = moment(list.dt_txt).format("dddd, MMMM D");
+
+        if (day !== currentDay) {
+          if (currentDay) {
+            forecast.append(div);
+            var div = $("<div>");
+          }
+          currentDay = day;
+          let h3 = $("<h3>");
+          h3.text(day);
+          forecast.append(h3);
+        }
+
+        let hour = moment(list.dt_txt).format("h:mm a");
+        let fahrenheit = kelvinToFahrenheit(list.main.temp);
+        let humidity = list.main.humidity;
+        let icon = getWeatherIcon(weather.icon);
+        let description = weather.main;
+
+        let spanHour = $("<span>").text(hour);
+        let spanTemp = $("<span>").text(fahrenheit).append(" ° ");
+        let spanIcon = $("<span>").html(icon);
+        let spanDescription = $("<span>").text(description);
+        let spanHumidity = $("<span>").text(humidity);
+        p.append(spanHour)
+          .append(spanTemp)
+          .append(spanIcon)
+          .append(spanDescription)
+          .append(spanHumidity);
+
+        div.append(p);
+        if (i === d.list.length - 1) {
+          forecast.append(div);
+        }
       }
+
+      makeAccordion();
     }
+  }
+
+  function getWindDirection(wind) {
+    let d = wind.deg;
+
+    if (d <= 90) {
+      return "NW";
+    } else if (d <= 180) {
+      return "SW";
+    } else if (d <= 270) {
+      return "SE";
+    } else if (d <= 360) {
+      return "NE";
+    }
+
+    return undefined;
   }
 
   $("form").on("submit", function (e) {
@@ -151,10 +229,19 @@ $(document).ready(function () {
 
     // set city
     city = e.target[0].value;
-    fetchData();
+
+    getLongLat(city);
+    //fetchData();
   });
 
-  //   $("#accordion").accordion({
-  //     collapsible: true,
-  //   });
+  function makeAccordion() {
+    $("#forecast").accordion({
+      collapsible: true,
+      heightStyle: "content",
+    });
+  }
+
+  $("#test").accordion({
+    collapsible: true,
+  });
 });
