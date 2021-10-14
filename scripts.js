@@ -84,13 +84,11 @@ $(document).ready(function () {
       });
   }
 
-  function fetchAPI(name, lon, lat) {
-    const apiName = name.trim().toLowerCase();
-    const URL = `https://api.openweathermap.org/data/2.5/${apiName}?q=${city}&appid=${APIKey}`;
+  function fetchAPI(name) {
+    const URL = `https://api.openweathermap.org/data/2.5/${name}?q=${city}&appid=${APIKey}`;
 
     fetch(URL)
       .then(function (response) {
-        console.log("response", response);
         if (response.status === 404) {
           handle404();
           return;
@@ -98,12 +96,11 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        console.log("data", data);
         setLocalStorage();
         setWeatherStats(data);
-        return data;
       });
   }
+
   function handle404() {
     $("#invalidSearch").text("Weather destination not found");
   }
@@ -126,11 +123,6 @@ $(document).ready(function () {
       humidity = main.humidity;
       windSpeed = main.wind.speed;
     }
-  }
-
-  function convertUnixToUnderstandableTime() {
-    // TODO: create conversion
-    return "5AM";
   }
 
   function kelvinToFahrenheit(kelvinTemp) {
