@@ -1,23 +1,71 @@
-#forecast div p {
+@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jomhuria&display=swap");
+body {
+  font-family: "Charm", cursive;
+}
+
+#current {
+  min-width: 500px;
+  border-radius: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#forecast {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border-bottom: 1px solid lightgrey;
-  font-size: 90%;
-  margin-bottom: 0;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
-#forecast div p span {
-  min-width: 20%;
+#forecast div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid lightgrey;
+  margin: 0 10px 10px 0;
+  min-width: 200px;
 }
 
-#forecast div p:last-child {
-  border: none;
+#forecast div span {
+  padding: 0 20px;
+}
+
+#forecast div span.hi, #forecast div span.lo {
+  font-family: "Jomhuria", cursive;
+}
+
+#forecast div span.hi {
+  font-size: 200%;
+}
+
+#forecast div span.lo {
+  font-size: 150%;
+}
+
+#forecast div span:first-child {
+  font-weight: 700;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #dff0fd;
 }
 /*# sourceMappingURL=styles.css.map */

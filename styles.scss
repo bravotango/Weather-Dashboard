@@ -1,16 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jomhuria&display=swap");
+body {
+  font-family: "Charm", cursive;
+}
+#current {
+  min-width: 500px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 #forecast {
-  div p {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  flex-wrap: wrap;
+  div {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid lightgrey;
-    font-size: 90%;
-    margin-bottom: 0;
+    border: 1px solid lightgrey;
+    margin: 0 10px 10px 0;
+    min-width: 200px;
+
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    // border-bottom: 1px solid lightgrey;
+    // font-size: 90%;
+    // margin-bottom: 0;
+    // span {
+    //   min-width: 20%;
+    // }
+
     span {
-      min-width: 20%;
-    }
-    &:last-child {
-      border: none;
+      padding: 0 20px;
+      &.hi,
+      &.lo {
+        font-family: "Jomhuria", cursive;
+      }
+      &.hi {
+        font-size: 200%;
+      }
+      &.lo {
+        font-size: 150%;
+      }
+      &:first-child {
+        font-weight: 700;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+        background-color: rgb(223, 240, 253);
+      }
     }
   }
 }
