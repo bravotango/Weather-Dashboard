@@ -1,11 +1,57 @@
-@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jomhuria&display=swap");
-body {
-  font-family: "Charm", cursive;
+@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jomhuria&family=Roboto&family=Karantina:wght@300&display=swap");
+:root {
+  --default-margin: 20px;
+  --default-padding: 20px;
+  --bg-primary-gradient: linear-gradient(#7946aa, #ae80b6);
+  --font-primary: "Jomhuria", cursive;
+  --font-secondary: "Roboto", sans-serif;
+  --font-fancy: "Charm", cursive;
 }
 
-#current {
-  min-width: 500px;
-  border-radius: 10px;
+body {
+  font-family: var(--font-secondary);
+  font-size: 1em;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container nav a.city {
+  display: block;
+}
+
+.container form {
+  font-size: 80%;
+}
+
+.container #current {
+  width: 100%;
+  border-radius: 6px;
+  background: var(--bg-primary-gradient);
+  color: #fff;
+  padding: var(--default-padding);
+  margin: var(--default-margin) 0;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container #current #display {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.container #current #display .left,
+.container #current #display .right {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -13,23 +59,62 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
-#forecast {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+.container #current .temp,
+.container #current .city {
+  font-family: var(--font-fancy);
+  font-size: 300%;
+}
+
+.container #current .focus {
+  float: right;
+}
+
+.container #current .uvi {
+  margin-top: 8px;
+}
+
+.container #current .uvi span {
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.container #current .uvi span.good {
+  background-color: green;
+}
+
+.container #current .uvi span.moderate {
+  background-color: yellow;
+  color: #464646;
+}
+
+.container #current .uvi span.warning {
+  background-color: #ffa601;
+}
+
+.container #current .uvi span.danger {
+  background-color: red;
+}
+
+.container #forecast {
+  display: none;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  width: 100%;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
 
-#forecast div {
+.container #forecast div {
+  border-radius: 6px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -41,31 +126,62 @@ body {
       -ms-flex-align: center;
           align-items: center;
   border: 1px solid lightgrey;
-  margin: 0 10px 10px 0;
-  min-width: 200px;
+  margin-bottom: 10px;
+  min-width: 18%;
+  min-height: 200px;
 }
 
-#forecast div span {
+.container #forecast div span {
   padding: 0 20px;
 }
 
-#forecast div span.hi, #forecast div span.lo {
-  font-family: "Jomhuria", cursive;
+.container #forecast div span.date, .container #forecast div span.hi, .container #forecast div span.lo {
+  font-family: var(--font-fancy);
 }
 
-#forecast div span.hi {
-  font-size: 200%;
-}
-
-#forecast div span.lo {
+.container #forecast div span.hi {
+  margin-top: 8px;
   font-size: 150%;
 }
 
-#forecast div span:first-child {
+.container #forecast div span.lo {
+  font-size: 100%;
+}
+
+.container #forecast div span.humidity, .container #forecast div span.windSpeed {
+  font-size: 80%;
+}
+
+.container #forecast div span:first-child {
   font-weight: 700;
   padding: 0;
   width: 100%;
   text-align: center;
-  background-color: #dff0fd;
+  background: var(--bg-primary-gradient);
+  color: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.container #forecast div:last-child {
+  margin-right: 0;
+}
+
+@media screen and (max-width: 1200px) {
+  #forecast {
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+  }
+  #forecast div {
+    min-height: 290px;
+    width: 48%;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  #forecast div {
+    width: 100%;
+  }
 }
 /*# sourceMappingURL=styles.css.map */

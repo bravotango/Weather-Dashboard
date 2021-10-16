@@ -19,35 +19,34 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <nav>
-      <ul id="searchedCities"></ul>
-    </nav>
-    <form id="searchCity">
-      <label for="searchCities">Enter city name</label>
-      <input id="citySearch" placeholder="city name" type="search" required />
-      <button>Search</button>
-    </form>
+    <div class="container">
+      <form id="searchCity">
+        <input
+          id="citySearch"
+          placeholder="Enter search destination"
+          type="search"
+          required
+        />
+        <button>Search</button>
+      </form>
 
-    <span id="invalidSearch"></span>
-
-    <span id="data"></span>
-
-    <span id="weatherIcon"></span>
-    <span id="city"></span>
-    <!-- TODO: change to degrees (F, C, Kelvin)  -->
-    <span id="fahrenheit"></span>
-    <span id="windSpeed"></span>
-    <span id="uvIndex"></span>
-    <span id="humidity"></span>
-    <span id="weatherMain"></span>
-    <span id="weatherDescription"></span>
-
-    <div id="current"></div>
-    <div id="forecast"></div>
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="./scripts.js"></script>
+      <span id="invalidSearch"></span>
+    </div>
+    <div class="container">
+      <div>
+        <nav>
+          <ul id="searchedCities"></ul>
+        </nav>
+      </div>
+      <div>
+        <nav id="searches"></nav>
+        <div id="current"></div>
+        <div id="forecast"></div>
+      </div>
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script src="./scripts.js"></script>
+    </div>
   </body>
 </html>
