@@ -3,22 +3,25 @@
 :root {
   --default-margin: 20px;
   --default-padding: 20px;
-  --bg-primary-gradient: linear-gradient(#7946aa, #ae80b6);
+  --bg-primary-gradient: linear-gradient(#19008a, #392885);
   --font-primary: "Jomhuria", cursive;
   --font-secondary: "Roboto", sans-serif;
   --font-fancy: "Charm", cursive;
 }
 body {
-  font-family: var(--font-secondary);
+  //font-family: var(--font-secondary);
   font-size: 1em;
 }
 .container {
   nav a.city {
     display: block;
+    min-width: 200px;
+    margin-top: 1px;
   }
   display: flex;
   form {
-    font-size: 80%;
+    margin: 20px;
+    font-size: 100%;
   }
   #current {
     width: 100%;
@@ -38,6 +41,7 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
+        align-items: center;
       }
     }
     .temp,
@@ -139,5 +143,8 @@ body {
     div {
       width: 100%;
     }
+  }
+  .container {
+    flex-direction: column-reverse;
   }
 }

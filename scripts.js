@@ -20,8 +20,8 @@ $(document).ready(function () {
 
   function resetPage() {
     invalidSearchEl.html("");
-    currentEl.html("");
-    forecastEl.html("");
+    currentEl.html("").css("display", "none");
+    forecastEl.html("").css("display", "none");
   }
   function getLocalStorage() {
     let localStorageCities = JSON.parse(localStorage.getItem("searchedCities"));
@@ -40,7 +40,7 @@ $(document).ready(function () {
     let searchedCitiesEl = $("#searchedCities");
     searchedCitiesEl.html("");
     searchedCities.forEach((city) => {
-      let a = $("<a href='#' class='city'>");
+      let a = $("<a href='#' class='city btn btn-secondary'>");
       a.text(city);
       searchedCitiesEl.append(a);
     });
@@ -162,7 +162,9 @@ $(document).ready(function () {
 
     currentEl.append(spanCityEl).append(spanTimeEl).append(leftRightContainer);
 
-    currentEl.css("display", "flex");
+    if (data) {
+      currentEl.css("display", "flex");
+    }
   }
 
   function setForecastWeather(data) {
