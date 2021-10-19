@@ -19,26 +19,33 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="container"><h1>Weather Dashboard</h1></div>
     <div class="container">
-      <form id="searchCity">
-        <input
-          id="citySearch"
-          placeholder="Enter search destination"
-          type="search"
-          required
-        />
-        <button>Search</button>
-      </form>
-
-      <span id="invalidSearch"></span>
-    </div>
-    <div class="container">
-      <nav class="mr-4">
-        <ul id="searchedCities"></ul>
-      </nav>
-
+        <div id="search">
+          <form id="searchCity">
+            <div class="input-group mb-3">
+              <input
+                class="form-control"
+                id="citySearch"
+                placeholder="Destination"
+                type="search"
+                required
+              />
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <span id="invalidSearch" ></span>
+          </form>
+          <div id="accordion" class="mb-3">
+            <h3>Searched destinations</h3>
+            <div>
+              <p><ul class="list-group list-group-flush" id="searchedCities"></ul></p>
+            </div>
+          </div>
+      </div>
       <div>
-        <div id="current"></div>
+        <div id="current" class="bg-primary"></div>
         <div id="forecast"></div>
       </div>
       <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

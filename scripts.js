@@ -1,22 +1,16 @@
 $(document).ready(function () {
-  let city;
-
-  const APIKey = "44c329c1fb39cc90b982fb588f6a68c5";
-  let invalidSearchEl = $("#invalidSearch");
-  let currentEl = $("#current");
-  let forecastEl = $("#forecast");
-
-  let searchedCities = getLocalStorage();
+  let destination; // current destination
+  const APIKey = "44c329c1fb39cc90b982fb588f6a68c5"; // OpenWeather.org API key
+  let invalidSearchEl = $("#invalidSearch"); // show error element
+  let currentEl = $("#current"); // current conditions element
+  let forecastEl = $("#forecast"); // forecast element
+  let searchedCities = getLocalStorage(); // get searched cities from local storage
 
   if (!searchedCities) {
     searchedCities = [];
   } else {
     printSearchedNav();
   }
-
-  //   setInterval(function () {
-  //     city ?? fetchData();
-  //   }, 3600000); // refresh current data each hour
 
   function resetPage() {
     invalidSearchEl.html("");
@@ -29,9 +23,9 @@ $(document).ready(function () {
   }
 
   function setLocalStorage(data) {
-    city = data.name;
-    if (!searchedCities.find((c) => c === city)) {
-      searchedCities.push(city);
+    destination = data.name;
+    if (!searchedCities.find((c) => c === destination)) {
+      searchedCities.push(destination);
     }
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
   }
@@ -39,21 +33,18 @@ $(document).ready(function () {
   function printSearchedNav() {
     let searchedCitiesEl = $("#searchedCities");
     searchedCitiesEl.html("");
-    searchedCities.forEach((city) => {
-      let a = $("<a href='#' class='city btn btn-secondary'>");
-      a.text(city);
-      searchedCitiesEl.append(a);
+    searchedCities.forEach((destination) => {
+      let li = $("<li class='list-group-item'>");
+      let a = $("<a href='#' class='destination'>");
+      a.text(destination);
+      li.append(a);
+      searchedCitiesEl.append(li);
     });
   }
 
-  $(document).on("click", ".city", function (e) {
-    city = e.currentTarget.innerText;
-    getLongLat(city);
-  });
-
-  function getLongLat(city) {
+  function getLongLat(destination) {
     resetPage();
-    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`;
+    const URL = `https://api.openweathermap.org/data/2.5/weather?q=${destination}&appid=${APIKey}`;
     fetch(URL)
       .then(function (response) {
         if (response.status !== 200) {
@@ -98,9 +89,7 @@ $(document).ready(function () {
     let current = data.current;
 
     // create HTML elements
-    let spanCityEl = $("<span class='city'>");
-    let spanSunriseEl = $("<span>");
-    let spanSunsetEl = $("<span>");
+    let spanDestinationEl = $("<span class='destination'>");
     let spanTimeEl = $("<span>");
     let spanHumidityEl = $("<span>");
     let spanWindSpeedEl = $("<span>");
@@ -108,17 +97,12 @@ $(document).ready(function () {
     let spanDescriptionEl = $("<span class='description'>");
     let spanHiLoEl = $("<span class='hiLo'>");
     let spanIconEl = $("<span class='icon'>");
-    let spanUviEl = $("<span class='uvi'>");
-    let spanWindEl = $("<span>");
-
+    let spanUviEl = $("<span class='uvi mt-2'>");
     let leftRightContainer = $('<span id="display">');
     let leftEl = $('<span class="left">');
     let rightEl = $('<span class="right">');
 
-    let spanTempDescriptionEl = $("<span class='tempDescription'>");
-
-    let sunrise = moment.unix(current.sunrise).format("h:mm a");
-    let sunset = moment.unix(current.sunset).format("h:mm a");
+    // grab the data for current day
     let time = moment.unix(current.dt).format("MMMM Do YYYY, h:mm:ss a");
     let humidity = getHumidity(current.humidity);
     let temp = `${current.temp.toFixed(0)}&#176;`;
@@ -126,23 +110,14 @@ $(document).ready(function () {
     let hiLo = `${data.daily[0].temp.max.toFixed(
       0
     )}&#176;/${data.daily[0].temp.min.toFixed(0)}&#176;`;
-    let windSpeed = getWindSpeed(current.wind_speed);
+    let windSpeed = `${getWindSpeed(current.wind_speed)} ${getWindDirection(
+      current.wind_deg
+    )}`;
     let icon = getWeatherIcon(current.weather[0].icon);
     let uvi = getUviHtml(current.uvi);
-    let wind = {
-      deg: current.wind_deg,
-      speed: current.wind_speed,
-      gust: current.wind_gust,
-    };
-    let w = current.weather[0];
-    let weather = {
-      description: w.description,
-      icon: getWeatherIcon(w.icon),
-      main: w.main,
-    };
 
-    // add content to html elements
-    spanCityEl.text(city);
+    // add data to html elements
+    spanDestinationEl.text(destination);
     spanTimeEl.text(time);
     spanTempEl.html(temp);
     spanDescriptionEl.html(description);
@@ -152,6 +127,7 @@ $(document).ready(function () {
     spanWindSpeedEl.text(windSpeed);
     spanUviEl.html(uvi);
 
+    // append the elements to the DOM
     leftEl
       .append(spanTempEl)
       .append(spanHiLoEl)
@@ -160,37 +136,48 @@ $(document).ready(function () {
     rightEl.append(spanHumidityEl).append(spanWindSpeedEl).append(spanUviEl);
     leftRightContainer.append(leftEl).append(rightEl);
 
-    currentEl.append(spanCityEl).append(spanTimeEl).append(leftRightContainer);
-
+    currentEl
+      .append(spanDestinationEl)
+      .append(spanTimeEl)
+      .append(leftRightContainer);
+    // show current conditions if data is populated
     if (data) {
       currentEl.css("display", "flex");
     }
   }
 
+  // populate forecast containers with data
   function setForecastWeather(data) {
     let currentDay = moment.unix(data.current.dt).format("MMMM Do YYYY");
     let firstForecastDay = moment.unix(data.daily[0].dt).format("MMMM Do YYYY");
+    // only grab the next five days for forecast
     daily =
       currentDay !== firstForecastDay
         ? data.daily.slice(2, 7)
         : data.daily.slice(1, 6);
 
+    // forEach day in daily array, create a day container with data
     daily.forEach((day) => {
+      // create day elements for each forecast day
       let divEl = $("<div>");
-      let spanDateEl = $("<span class='date'>");
+      let spanDateEl = $("<span class='date bg-primary'>");
       let spanHiEl = $("<span class='hi'>");
       let spanLoEl = $("<span class='lo'>");
       let spanIconEl = $("<span class='icon'>");
       let spanHumidityEl = $("<span class='humidity'>");
       let spanWindSpeedEl = $("<span class='windSpeed'>");
 
+      // grab the data for forecast day
       let date = unixToDate(day.dt, "ddd D");
       let hi = `${day.temp.max.toFixed(0)}&#176;`;
       let lo = `${day.temp.min.toFixed(0)}&#176;`;
       let icon = getWeatherIcon(day.weather[0].icon);
       let humidity = getHumidity(day.humidity);
-      let windSpeed = getWindSpeed(day.wind_speed);
+      let windSpeed = `${getWindSpeed(day.wind_speed)} ${getWindDirection(
+        day.wind_deg
+      )}`;
 
+      // add data to forecast day element
       spanDateEl.text(date);
       spanHiEl.html(hi);
       spanLoEl.html(lo);
@@ -198,6 +185,7 @@ $(document).ready(function () {
       spanHumidityEl.text(humidity);
       spanWindSpeedEl.text(windSpeed);
 
+      // append elements to DOM
       divEl
         .append(spanDateEl)
         .append(spanHiEl)
@@ -208,6 +196,7 @@ $(document).ready(function () {
 
       forecastEl.append(divEl);
     });
+    // display the forecast container
     forecastEl.css("display", "flex");
   }
 
@@ -222,7 +211,7 @@ $(document).ready(function () {
     } else {
       className = "danger";
     }
-    return `<span class='${className}'>UV Index: ${uvi}</span>`;
+    return `<span class='${className} p-2'>UV Index: ${uvi}</span>`;
   }
 
   function unixToDate(unix, format) {
@@ -248,8 +237,8 @@ $(document).ready(function () {
   function getWindSpeed(windSpeed) {
     return `Wind: ${windSpeed.toFixed(1)} MPH`;
   }
-  function getWindDirection(wind) {
-    let d = wind.deg;
+  function getWindDirection(direction) {
+    let d = direction;
 
     if (d <= 90) {
       return "NW";
@@ -260,28 +249,26 @@ $(document).ready(function () {
     } else if (d <= 360) {
       return "NE";
     }
-
-    return undefined;
+    return "";
   }
 
+  // destination search form submitted
   $("form").on("submit", function (e) {
     e.preventDefault();
-    console.log($("#citySearch").val());
-
-    // set city
-    let formCityValue = e.target[0].value;
-
-    getLongLat(formCityValue);
+    getLongLat(e.target[0].value);
   });
 
-  function makeAccordion() {
-    $("#forecast").accordion({
+  // accordion used to help with mobile screens, so main content can be viewed
+  $(function () {
+    $("#accordion").accordion({
+      active: false,
       collapsible: true,
-      heightStyle: "content",
     });
-  }
+  });
 
-  $("#test").accordion({
-    collapsible: true,
+  // on click of searched destination - lets call getLongLat for that city
+  $(document).on("click", ".destination", function (e) {
+    destination = e.currentTarget.innerText;
+    getLongLat(destination);
   });
 });

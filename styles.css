@@ -1,15 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jomhuria&family=Roboto&family=Karantina:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap");
 :root {
-  --default-margin: 20px;
-  --default-padding: 20px;
-  --bg-primary-gradient: linear-gradient(#19008a, #392885);
-  --font-primary: "Jomhuria", cursive;
-  --font-secondary: "Roboto", sans-serif;
+  --default-margin: 1rem;
+  --default-padding: 1rem;
+  --default-border-radius: 6px;
   --font-fancy: "Charm", cursive;
 }
 
-body {
-  font-size: 1em;
+h1 {
+  font-family: var(--font-fancy);
+}
+
+#accordion h3,
+#accordion div {
+  white-space: nowrap;
 }
 
 .container {
@@ -18,24 +21,24 @@ body {
   display: flex;
 }
 
-.container nav a.city {
+.container #search {
+  margin-right: var(--default-margin);
+}
+
+.container ul li a.destination {
   display: block;
-  min-width: 200px;
   margin-top: 1px;
 }
 
 .container form {
-  margin: 20px;
   font-size: 100%;
 }
 
 .container #current {
   width: 100%;
-  border-radius: 6px;
-  background: var(--bg-primary-gradient);
+  border-radius: var(--default-border-radius);
   color: #fff;
   padding: var(--default-padding);
-  margin: var(--default-margin) 0;
   display: none;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -70,22 +73,13 @@ body {
 }
 
 .container #current .temp,
-.container #current .city {
+.container #current .destination {
   font-family: var(--font-fancy);
   font-size: 300%;
 }
 
-.container #current .focus {
-  float: right;
-}
-
-.container #current .uvi {
-  margin-top: 8px;
-}
-
 .container #current .uvi span {
-  padding: 10px;
-  border-radius: 8px;
+  border-radius: var(--default-border-radius);
 }
 
 .container #current .uvi span.good {
@@ -119,7 +113,7 @@ body {
 }
 
 .container #forecast div {
-  border-radius: 6px;
+  border-radius: var(--default-border-radius);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -131,13 +125,13 @@ body {
       -ms-flex-align: center;
           align-items: center;
   border: 1px solid lightgrey;
-  margin-bottom: 10px;
+  margin-top: var(--default-margin);
   min-width: 18%;
   min-height: 200px;
 }
 
 .container #forecast div span {
-  padding: 0 20px;
+  padding: 0 var(--default-padding);
 }
 
 .container #forecast div span.date, .container #forecast div span.hi, .container #forecast div span.lo {
@@ -162,10 +156,9 @@ body {
   padding: 0;
   width: 100%;
   text-align: center;
-  background: var(--bg-primary-gradient);
   color: #fff;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: var(--default-border-radius);
+  border-top-right-radius: var(--default-border-radius);
 }
 
 .container #forecast div:last-child {
@@ -184,15 +177,18 @@ body {
   }
 }
 
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 975px) {
   #forecast div {
     width: 100%;
   }
   .container {
     -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-        -ms-flex-direction: column-reverse;
-            flex-direction: column-reverse;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .container > div {
+    width: 100%;
   }
 }
 /*# sourceMappingURL=styles.css.map */
