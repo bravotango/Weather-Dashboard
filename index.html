@@ -20,34 +20,43 @@
   </head>
   <body>
     <div class="container"><h1>Weather Dashboard</h1></div>
+
+    <div class="jumbotron">
+      <p class="lead container">
+        As a traveler, search the weather outlook for multiple destinations to
+        plan a trip accordingly.
+      </p>
+    </div>
+
     <div class="container">
-        <div id="search">
-          <form id="searchCity">
-            <div class="input-group mb-3">
-              <input
-                class="form-control"
-                id="citySearch"
-                placeholder="Destination"
-                type="search"
-                required
-              />
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search</button>
-              </div>
-            </div>
-            <span id="invalidSearch" ></span>
-          </form>
-          <div id="accordion" class="mb-3">
-            <h3>Searched destinations</h3>
-            <div>
-              <p><ul class="list-group list-group-flush" id="searchedCities"></ul></p>
+      <div id="search">
+        <form id="searchCity">
+          <div class="input-group mb-3">
+            <input
+              class="form-control"
+              id="citySearch"
+              placeholder="Destination"
+              type="search"
+              required
+            />
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-primary">Search</button>
             </div>
           </div>
+          <span id="invalidSearch"></span>
+        </form>
+        <div id="accordion" class="mb-3">
+          <h3>Previous destinations</h3>
+          <div>
+            <ul class="list-group list-group-flush" id="searchedCities"></ul>
+          </div>
+        </div>
       </div>
       <div>
         <div id="current" class="bg-primary"></div>
         <div id="forecast"></div>
       </div>
+
       <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
       <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

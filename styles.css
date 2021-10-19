@@ -6,36 +6,50 @@
   --font-fancy: "Charm", cursive;
 }
 
-h1 {
+body {
+  overflow-y: scroll;
+}
+
+body .jumbotron {
+  border-radius: 0;
+}
+
+body .jumbotron .lead.container {
+  padding: var(--default-padding);
+}
+
+body h1 {
+  margin: 50px auto;
   font-family: var(--font-fancy);
 }
 
-#accordion h3,
-#accordion div {
+body #accordion h3,
+body #accordion div {
   white-space: nowrap;
 }
 
-.container {
+body .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.container #search {
+body .container #search {
   margin-right: var(--default-margin);
 }
 
-.container ul li a.destination {
+body .container ul li a.destination {
   display: block;
   margin-top: 1px;
 }
 
-.container form {
+body .container form {
   font-size: 100%;
 }
 
-.container #current {
+body .container #current {
   width: 100%;
+  font-size: 100%;
   border-radius: var(--default-border-radius);
   color: #fff;
   padding: var(--default-padding);
@@ -46,7 +60,7 @@ h1 {
           flex-direction: column;
 }
 
-.container #current #display {
+body .container #current #display {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -55,8 +69,8 @@ h1 {
           justify-content: space-between;
 }
 
-.container #current #display .left,
-.container #current #display .right {
+body .container #current #display .left,
+body .container #current #display .right {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -72,34 +86,34 @@ h1 {
           align-items: center;
 }
 
-.container #current .temp,
-.container #current .destination {
+body .container #current .temp,
+body .container #current .destination {
   font-family: var(--font-fancy);
   font-size: 300%;
 }
 
-.container #current .uvi span {
+body .container #current .uvi span {
   border-radius: var(--default-border-radius);
 }
 
-.container #current .uvi span.good {
+body .container #current .uvi span.good {
   background-color: green;
 }
 
-.container #current .uvi span.moderate {
+body .container #current .uvi span.moderate {
   background-color: yellow;
   color: #464646;
 }
 
-.container #current .uvi span.warning {
+body .container #current .uvi span.warning {
   background-color: #ffa601;
 }
 
-.container #current .uvi span.danger {
+body .container #current .uvi span.danger {
   background-color: red;
 }
 
-.container #forecast {
+body .container #forecast {
   display: none;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
@@ -110,9 +124,12 @@ h1 {
   width: 100%;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  -webkit-transition-property: all;
+  transition-property: all;
+  margin-bottom: var(--default-margin);
 }
 
-.container #forecast div {
+body .container #forecast div {
   border-radius: var(--default-border-radius);
   display: -webkit-box;
   display: -ms-flexbox;
@@ -126,32 +143,32 @@ h1 {
           align-items: center;
   border: 1px solid lightgrey;
   margin-top: var(--default-margin);
-  min-width: 18%;
+  min-width: 15%;
   min-height: 200px;
 }
 
-.container #forecast div span {
+body .container #forecast div span {
   padding: 0 var(--default-padding);
 }
 
-.container #forecast div span.date, .container #forecast div span.hi, .container #forecast div span.lo {
+body .container #forecast div span.date, body .container #forecast div span.hi, body .container #forecast div span.lo {
   font-family: var(--font-fancy);
 }
 
-.container #forecast div span.hi {
+body .container #forecast div span.hi {
   margin-top: 8px;
   font-size: 150%;
 }
 
-.container #forecast div span.lo {
+body .container #forecast div span.lo {
   font-size: 100%;
 }
 
-.container #forecast div span.humidity, .container #forecast div span.windSpeed {
+body .container #forecast div span.humidity, body .container #forecast div span.windSpeed {
   font-size: 80%;
 }
 
-.container #forecast div span:first-child {
+body .container #forecast div span:first-child {
   font-weight: 700;
   padding: 0;
   width: 100%;
@@ -161,7 +178,7 @@ h1 {
   border-top-right-radius: var(--default-border-radius);
 }
 
-.container #forecast div:last-child {
+body .container #forecast div:last-child {
   margin-right: 0;
 }
 
@@ -178,16 +195,22 @@ h1 {
 }
 
 @media screen and (max-width: 975px) {
-  #forecast div {
+  body h1 {
+    margin: var(--default-margin);
+  }
+  body .jumbotron .lead.container {
+    font-size: 100%;
+  }
+  body #forecast div {
     width: 100%;
   }
-  .container {
+  body .container {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
   }
-  .container > div {
+  body .container > div {
     width: 100%;
   }
 }

@@ -5,11 +5,14 @@ $(document).ready(function () {
   let currentEl = $("#current"); // current conditions element
   let forecastEl = $("#forecast"); // forecast element
   let searchedCities = getLocalStorage(); // get searched cities from local storage
+  let accordionToggle = $("#accordion h3");
 
   if (!searchedCities) {
     searchedCities = [];
+    accordionToggle.css("display", "none");
   } else {
     printSearchedNav();
+    addAccordion();
   }
 
   function resetPage() {
@@ -28,6 +31,7 @@ $(document).ready(function () {
       searchedCities.push(destination);
     }
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
+    addAccordion();
   }
 
   function printSearchedNav() {
@@ -85,8 +89,9 @@ $(document).ready(function () {
     printSearchedNav();
   }
 
+  // populate #current with data
   function setCurrentWeather(data) {
-    let current = data.current;
+    const current = data.current;
 
     // create HTML elements
     let spanDestinationEl = $("<span class='destination'>");
@@ -102,7 +107,7 @@ $(document).ready(function () {
     let leftEl = $('<span class="left">');
     let rightEl = $('<span class="right">');
 
-    // grab the data for current day
+    // populate current variables from 'let current'
     let time = moment.unix(current.dt).format("MMMM Do YYYY, h:mm:ss a");
     let humidity = getHumidity(current.humidity);
     let temp = `${current.temp.toFixed(0)}&#176;`;
@@ -116,7 +121,6 @@ $(document).ready(function () {
     let icon = getWeatherIcon(current.weather[0].icon);
     let uvi = getUviHtml(current.uvi);
 
-    // add data to html elements
     spanDestinationEl.text(destination);
     spanTimeEl.text(time);
     spanTempEl.html(temp);
@@ -146,7 +150,7 @@ $(document).ready(function () {
     }
   }
 
-  // populate forecast containers with data
+  // populate #forecast with data
   function setForecastWeather(data) {
     let currentDay = moment.unix(data.current.dt).format("MMMM Do YYYY");
     let firstForecastDay = moment.unix(data.daily[0].dt).format("MMMM Do YYYY");
@@ -159,41 +163,22 @@ $(document).ready(function () {
     // forEach day in daily array, create a day container with data
     daily.forEach((day) => {
       // create day elements for each forecast day
-      let divEl = $("<div>");
-      let spanDateEl = $("<span class='date bg-primary'>");
-      let spanHiEl = $("<span class='hi'>");
-      let spanLoEl = $("<span class='lo'>");
-      let spanIconEl = $("<span class='icon'>");
-      let spanHumidityEl = $("<span class='humidity'>");
-      let spanWindSpeedEl = $("<span class='windSpeed'>");
-
-      // grab the data for forecast day
-      let date = unixToDate(day.dt, "ddd D");
-      let hi = `${day.temp.max.toFixed(0)}&#176;`;
-      let lo = `${day.temp.min.toFixed(0)}&#176;`;
-      let icon = getWeatherIcon(day.weather[0].icon);
-      let humidity = getHumidity(day.humidity);
-      let windSpeed = `${getWindSpeed(day.wind_speed)} ${getWindDirection(
-        day.wind_deg
-      )}`;
-
-      // add data to forecast day element
-      spanDateEl.text(date);
-      spanHiEl.html(hi);
-      spanLoEl.html(lo);
-      spanIconEl.html(icon);
-      spanHumidityEl.text(humidity);
-      spanWindSpeedEl.text(windSpeed);
-
-      // append elements to DOM
-      divEl
-        .append(spanDateEl)
-        .append(spanHiEl)
-        .append(spanLoEl)
-        .append(spanIconEl)
-        .append(spanHumidityEl)
-        .append(spanWindSpeedEl);
-
+      let divEl = $("<div>")
+        .append(
+          $("<span class='date bg-primary'>").text(unixToDate(day.dt, "ddd D"))
+        )
+        .append($("<span class='hi'>").html(`${day.temp.max.toFixed(0)}&#176;`))
+        .append($("<span class='lo'>").html(`${day.temp.min.toFixed(0)}&#176;`))
+        .append(
+          $("<span class='icon'>").html(getWeatherIcon(day.weather[0].icon))
+        )
+        .append($("<span class='humidity'>").text(getHumidity(day.humidity)))
+        .append(
+          $("<span class='windSpeed'>").html(
+            `${getWindSpeed(day.wind_speed)} ${getWindDirection(day.wind_deg)}`
+          )
+        );
+      // append day container to DOM
       forecastEl.append(divEl);
     });
     // display the forecast container
@@ -259,16 +244,41 @@ $(document).ready(function () {
   });
 
   // accordion used to help with mobile screens, so main content can be viewed
-  $(function () {
+  function addAccordion() {
+    accordionToggle.css("display", "block");
+    $(".jumbotron").css("padding", "0");
     $("#accordion").accordion({
-      active: false,
+      active: false, // collapse the menu
       collapsible: true,
+      heightStyle: "content",
     });
-  });
+  }
+
+  function openAccordion() {
+    console.log("foo");
+    accordionToggle.css("display", "block");
+    $("#accordion").accordion({
+      active: true, // open the menu
+    });
+  }
 
   // on click of searched destination - lets call getLongLat for that city
   $(document).on("click", ".destination", function (e) {
     destination = e.currentTarget.innerText;
     getLongLat(destination);
+  });
+
+  console.log("going to lastWidth");
+  var lastWidth = $(window).width();
+  $(window).resize(function () {
+    if ($(window).width() != lastWidth) {
+      //execute code here.
+      if ($(window).width() > 975) {
+        console.log("lets do something");
+        openAccordion();
+      }
+      lastWidth = $(window).width();
+      console.log("lastWidth", lastWidth);
+    }
   });
 });
