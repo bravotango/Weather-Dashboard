@@ -55,8 +55,7 @@ body {
         .right {
           display: flex;
           flex-direction: column;
-          justify-content: flex-end;
-          align-items: center;
+          justify-content: space-evenly;
         }
       }
       .temp,

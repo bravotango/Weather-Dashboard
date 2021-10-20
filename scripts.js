@@ -1,15 +1,18 @@
 $(document).ready(function () {
-  let destination; // current destination
-  const APIKey = "44c329c1fb39cc90b982fb588f6a68c5"; // OpenWeather.org API key
-  let invalidSearchEl = $("#invalidSearch"); // show error element
-  let currentEl = $("#current"); // current conditions element
-  let forecastEl = $("#forecast"); // forecast element
-  let searchedCities = getLocalStorage(); // get searched cities from local storage
-  let accordionToggle = $("#accordion h3");
+  const APIKey = "44c329c1fb39cc90b982fb588f6a68c5"; // My OpenWeather.org API key
 
-  if (!searchedCities) {
-    searchedCities = [];
-    accordionToggle.css("display", "none");
+  let destination; // most recent session search destination
+
+  let invalidSearchEl = $("#invalidSearch"); // element: show error
+  let currentEl = $("#current"); // element: current conditions element
+  let forecastEl = $("#forecast"); // element: forecast element
+  let accordionToggleEl = $("#accordion h3"); // element: searched destinations collapse toggle
+
+  let searchedDestinations = getLocalStorage(); // get searched cities from local storage
+
+  if (!searchedDestinations) {
+    searchedDestinations = [];
+    accordionToggleEl.css("display", "none");
   } else {
     printSearchedNav();
     addAccordion();
@@ -20,29 +23,30 @@ $(document).ready(function () {
     currentEl.html("").css("display", "none");
     forecastEl.html("").css("display", "none");
   }
+
   function getLocalStorage() {
-    let localStorageCities = JSON.parse(localStorage.getItem("searchedCities"));
+    let localStorageCities = JSON.parse(localStorage.getItem("searchedDestinations"));
     return localStorageCities;
   }
 
   function setLocalStorage(data) {
     destination = data.name;
-    if (!searchedCities.find((c) => c === destination)) {
-      searchedCities.push(destination);
+    if (!searchedDestinations.find((c) => c === destination)) {
+      searchedDestinations.push(destination);
     }
-    localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
+    localStorage.setItem("searchedDestinations", JSON.stringify(searchedDestinations));
     addAccordion();
   }
 
   function printSearchedNav() {
-    let searchedCitiesEl = $("#searchedCities");
-    searchedCitiesEl.html("");
-    searchedCities.forEach((destination) => {
+    let searchedDestinationsEl = $("#searchedDestinations");
+    searchedDestinationsEl.html("");
+    searchedDestinations.forEach((destination) => {
       let li = $("<li class='list-group-item'>");
       let a = $("<a href='#' class='destination'>");
       a.text(destination);
       li.append(a);
-      searchedCitiesEl.append(li);
+      searchedDestinationsEl.append(li);
     });
   }
 
@@ -52,7 +56,7 @@ $(document).ready(function () {
     fetch(URL)
       .then(function (response) {
         if (response.status !== 200) {
-          throw new Error(`Bad Request. Request responded with: ${response.status}`);
+          throw new Error(notResponse200(response));
         }
         return response.json();
       })
@@ -70,7 +74,7 @@ $(document).ready(function () {
     fetch(URL)
       .then(function (response) {
         if (response.status !== 200) {
-          throw new Error(`Bad Request. Request responded with: ${response.status}`);
+          throw new Error(notResponse200(response));
         }
         return response.json();
       })
@@ -82,6 +86,10 @@ $(document).ready(function () {
         handleError(err);
       });
     printSearchedNav();
+  }
+
+  function notResponse200(response) {
+    return `request responded with: ${response.status}`;
   }
 
   // populate #current with data
@@ -178,6 +186,7 @@ $(document).ready(function () {
   function getWindSpeed(windSpeed) {
     return `Wind: ${windSpeed.toFixed(1)} MPH`;
   }
+
   function getWindDirection(direction) {
     let d = direction;
 
@@ -201,7 +210,7 @@ $(document).ready(function () {
 
   // accordion used to help with mobile screens, so main content can be viewed
   function addAccordion() {
-    accordionToggle.css("display", "block");
+    accordionToggleEl.css("display", "block");
     $(".jumbotron").css("padding", "0");
     $("#accordion").accordion({
       active: false, // collapse the menu
