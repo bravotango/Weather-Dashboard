@@ -52,11 +52,8 @@ $(document).ready(function () {
     fetch(URL)
       .then(function (response) {
         if (response.status !== 200) {
-          throw new Error(
-            `Bad Request. Request responded with: ${response.status}`
-          );
+          throw new Error(`Bad Request. Request responded with: ${response.status}`);
         }
-
         return response.json();
       })
       .then(function (data) {
@@ -73,9 +70,7 @@ $(document).ready(function () {
     fetch(URL)
       .then(function (response) {
         if (response.status !== 200) {
-          throw new Error(
-            `Bad Request. Request responded with: ${response.status}`
-          );
+          throw new Error(`Bad Request. Request responded with: ${response.status}`);
         }
         return response.json();
       })
@@ -93,57 +88,29 @@ $(document).ready(function () {
   function setCurrentWeather(data) {
     const current = data.current;
 
-    // create HTML elements
-    let spanDestinationEl = $("<span class='destination'>");
-    let spanTimeEl = $("<span>");
-    let spanHumidityEl = $("<span>");
-    let spanWindSpeedEl = $("<span>");
-    let spanTempEl = $("<span class='temp'>");
-    let spanDescriptionEl = $("<span class='description'>");
-    let spanHiLoEl = $("<span class='hiLo'>");
-    let spanIconEl = $("<span class='icon'>");
-    let spanUviEl = $("<span class='uvi mt-2'>");
+    // create HTML elements & populate with data
+    let spanDestinationEl = $("<span class='destination'>").text(destination);
+    let spanTimeEl = $("<span>").text(moment.unix(current.dt).format("MMMM Do YYYY, h:mm:ss a"));
+    let spanHumidityEl = $("<span>").text(getHumidity(current.humidity));
+    let spanWindSpeedEl = $("<span>").text(`${getWindSpeed(current.wind_speed)} ${getWindDirection(current.wind_deg)}`);
+    let spanTempEl = $("<span class='temp'>").html(`${current.temp.toFixed(0)}&#176;`);
+    let spanDescriptionEl = $("<span class='description'>").html(current.weather[0].main);
+    let spanHiLoEl = $("<span class='hiLo'>").html(
+      `${data.daily[0].temp.max.toFixed(0)}&#176;/${data.daily[0].temp.min.toFixed(0)}&#176;`
+    );
+    let spanIconEl = $("<span class='icon'>").html(getWeatherIcon(current.weather[0].icon));
+    let spanUviEl = $("<span class='uvi mt-2'>").html(getUviHtml(current.uvi));
     let leftRightContainer = $('<span id="display">');
     let leftEl = $('<span class="left">');
     let rightEl = $('<span class="right">');
 
-    // populate current variables from 'let current'
-    let time = moment.unix(current.dt).format("MMMM Do YYYY, h:mm:ss a");
-    let humidity = getHumidity(current.humidity);
-    let temp = `${current.temp.toFixed(0)}&#176;`;
-    let description = current.weather[0].main;
-    let hiLo = `${data.daily[0].temp.max.toFixed(
-      0
-    )}&#176;/${data.daily[0].temp.min.toFixed(0)}&#176;`;
-    let windSpeed = `${getWindSpeed(current.wind_speed)} ${getWindDirection(
-      current.wind_deg
-    )}`;
-    let icon = getWeatherIcon(current.weather[0].icon);
-    let uvi = getUviHtml(current.uvi);
-
-    spanDestinationEl.text(destination);
-    spanTimeEl.text(time);
-    spanTempEl.html(temp);
-    spanDescriptionEl.html(description);
-    spanIconEl.html(icon);
-    spanHiLoEl.html(hiLo);
-    spanHumidityEl.text(humidity);
-    spanWindSpeedEl.text(windSpeed);
-    spanUviEl.html(uvi);
-
     // append the elements to the DOM
-    leftEl
-      .append(spanTempEl)
-      .append(spanHiLoEl)
-      .append(spanIconEl)
-      .append(spanDescriptionEl);
+    leftEl.append(spanTempEl).append(spanHiLoEl).append(spanIconEl).append(spanDescriptionEl);
     rightEl.append(spanHumidityEl).append(spanWindSpeedEl).append(spanUviEl);
     leftRightContainer.append(leftEl).append(rightEl);
 
-    currentEl
-      .append(spanDestinationEl)
-      .append(spanTimeEl)
-      .append(leftRightContainer);
+    currentEl.append(spanDestinationEl).append(spanTimeEl).append(leftRightContainer);
+
     // show current conditions if data is populated
     if (data) {
       currentEl.css("display", "flex");
@@ -155,28 +122,19 @@ $(document).ready(function () {
     let currentDay = moment.unix(data.current.dt).format("MMMM Do YYYY");
     let firstForecastDay = moment.unix(data.daily[0].dt).format("MMMM Do YYYY");
     // only grab the next five days for forecast
-    daily =
-      currentDay !== firstForecastDay
-        ? data.daily.slice(2, 7)
-        : data.daily.slice(1, 6);
+    daily = currentDay !== firstForecastDay ? data.daily.slice(2, 7) : data.daily.slice(1, 6);
 
     // forEach day in daily array, create a day container with data
     daily.forEach((day) => {
-      // create day elements for each forecast day
+      // append day elements & data for each forecast day
       let divEl = $("<div>")
-        .append(
-          $("<span class='date bg-primary'>").text(unixToDate(day.dt, "ddd D"))
-        )
+        .append($("<span class='date bg-primary'>").text(unixToDate(day.dt, "ddd D")))
         .append($("<span class='hi'>").html(`${day.temp.max.toFixed(0)}&#176;`))
         .append($("<span class='lo'>").html(`${day.temp.min.toFixed(0)}&#176;`))
-        .append(
-          $("<span class='icon'>").html(getWeatherIcon(day.weather[0].icon))
-        )
+        .append($("<span class='icon'>").html(getWeatherIcon(day.weather[0].icon)))
         .append($("<span class='humidity'>").text(getHumidity(day.humidity)))
         .append(
-          $("<span class='windSpeed'>").html(
-            `${getWindSpeed(day.wind_speed)} ${getWindDirection(day.wind_deg)}`
-          )
+          $("<span class='windSpeed'>").html(`${getWindSpeed(day.wind_speed)} ${getWindDirection(day.wind_deg)}`)
         );
       // append day container to DOM
       forecastEl.append(divEl);
@@ -200,9 +158,7 @@ $(document).ready(function () {
   }
 
   function unixToDate(unix, format) {
-    return moment().format(format) === moment.unix(unix).format(format)
-      ? "Today"
-      : moment.unix(unix).format(format);
+    return moment().format(format) === moment.unix(unix).format(format) ? "Today" : moment.unix(unix).format(format);
   }
 
   function handleError(e) {
@@ -250,15 +206,7 @@ $(document).ready(function () {
     $("#accordion").accordion({
       active: false, // collapse the menu
       collapsible: true,
-      heightStyle: "content",
-    });
-  }
-
-  function openAccordion() {
-    console.log("foo");
-    accordionToggle.css("display", "block");
-    $("#accordion").accordion({
-      active: true, // open the menu
+      heightStyle: "content", // size accordion to inner content
     });
   }
 
@@ -266,19 +214,5 @@ $(document).ready(function () {
   $(document).on("click", ".destination", function (e) {
     destination = e.currentTarget.innerText;
     getLongLat(destination);
-  });
-
-  console.log("going to lastWidth");
-  var lastWidth = $(window).width();
-  $(window).resize(function () {
-    if ($(window).width() != lastWidth) {
-      //execute code here.
-      if ($(window).width() > 975) {
-        console.log("lets do something");
-        openAccordion();
-      }
-      lastWidth = $(window).width();
-      console.log("lastWidth", lastWidth);
-    }
   });
 });
