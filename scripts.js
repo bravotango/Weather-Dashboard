@@ -89,7 +89,7 @@ $(document).ready(function () {
   }
 
   function notResponse200(response) {
-    return `request responded with: ${response.status}`;
+    return `Request responded with status <i>'${response.status}'</i>`;
   }
 
   // populate #current with data
