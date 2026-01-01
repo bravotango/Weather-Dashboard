@@ -12,7 +12,10 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -20,7 +23,8 @@
 
     <div class="jumbotron">
       <p class="lead container">
-        As a traveler, search the weather outlook for multiple destinations to plan a trip accordingly.
+        As a traveler, search the weather outlook for multiple destinations to
+        plan a trip accordingly.
       </p>
     </div>
 
@@ -28,7 +32,12 @@
       <div id="search">
         <form id="searchCity">
           <div class="input-group mb-3">
-            <input class="form-control" placeholder="Destination" type="search" required />
+            <input
+              class="form-control"
+              placeholder="Destination"
+              type="search"
+              required
+            />
             <div class="input-group-append">
               <button type="submit" class="btn btn-primary">Search</button>
             </div>
@@ -38,7 +47,10 @@
         <div id="accordion" class="mb-3">
           <h3>Previous destinations</h3>
           <div>
-            <ul class="list-group list-group-flush" id="searchedDestinations"></ul>
+            <ul
+              class="list-group list-group-flush"
+              id="searchedDestinations"
+            ></ul>
           </div>
         </div>
       </div>
