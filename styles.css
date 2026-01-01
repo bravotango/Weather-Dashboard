@@ -10,6 +10,11 @@ body {
   overflow-y: scroll;
 }
 
+body .header {
+  background-color: rgb(0, 0, 0);
+  margin-bottom: 16px;
+}
+
 body .jumbotron {
   border-radius: 0;
 }
@@ -56,8 +61,8 @@ body .container #current {
   display: none;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 body .container #current #display {
@@ -65,8 +70,8 @@ body .container #current #display {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 body .container #current #display .left,
@@ -76,11 +81,11 @@ body .container #current #display .right {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
 }
 
 body .container #current .temp,
@@ -113,14 +118,14 @@ body .container #current .uvi span.danger {
 body .container #forecast {
   display: none;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   width: 100%;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   -webkit-transition-property: all;
   transition-property: all;
   margin-bottom: var(--default-margin);
@@ -133,11 +138,11 @@ body .container #forecast div {
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   border: 1px solid lightgrey;
   margin-top: var(--default-margin);
   min-width: 15%;
@@ -148,7 +153,9 @@ body .container #forecast div span {
   padding: 0 var(--default-padding);
 }
 
-body .container #forecast div span.date, body .container #forecast div span.hi, body .container #forecast div span.lo {
+body .container #forecast div span.date,
+body .container #forecast div span.hi,
+body .container #forecast div span.lo {
   font-family: var(--font-fancy);
 }
 
@@ -161,7 +168,8 @@ body .container #forecast div span.lo {
   font-size: 100%;
 }
 
-body .container #forecast div span.humidity, body .container #forecast div span.windSpeed {
+body .container #forecast div span.humidity,
+body .container #forecast div span.windSpeed {
   font-size: 80%;
 }
 
@@ -182,8 +190,8 @@ body .container #forecast div:last-child {
 @media screen and (max-width: 1200px) {
   #forecast {
     -webkit-box-pack: space-evenly;
-        -ms-flex-pack: space-evenly;
-            justify-content: space-evenly;
+    -ms-flex-pack: space-evenly;
+    justify-content: space-evenly;
   }
   #forecast div {
     min-height: 290px;
@@ -204,8 +212,8 @@ body .container #forecast div:last-child {
   body .container {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
   body .container > div {
     width: 100%;
